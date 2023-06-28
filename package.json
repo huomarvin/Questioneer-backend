@@ -1,8 +1,8 @@
 {
   "name": "questioneer-backend",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "问卷管理系统后端",
+  "author": "Marvin.H",
   "private": true,
   "license": "MIT",
   "scripts": {
@@ -116,8 +116,6 @@
     }
   },
   "_moduleAliases": {
-    "@root": ".",
-    "src": "src/",
     "@/": "src/"
   }
 }

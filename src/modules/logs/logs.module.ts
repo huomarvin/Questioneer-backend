@@ -10,7 +10,6 @@ import { LogsController } from './logs.controller';
 import { LogsService } from './logs.service';
 import { join } from 'path';
 
-
 function createDailyRotateTrasnport(level: string, filename: string) {
   return new DailyRotateFile({
     level,
@@ -41,7 +40,11 @@ function createDailyRotateTrasnport(level: string, filename: string) {
           level: configService.get(LogEnum.LOG_LEVEL) || 'info',
           format: winston.format.combine(...conbine),
         });
-        console.log('pwd', join(process.cwd(), 'logs'), configService.get(LogEnum.LOG_ON))
+        console.log(
+          'pwd',
+          join(process.cwd(), 'logs'),
+          configService.get(LogEnum.LOG_ON),
+        );
         return {
           transports: [
             consoleTransports,
