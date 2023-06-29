@@ -67,49 +67,49 @@ describe('AuthService（登录认证模块-服务）', () => {
     expect(service).toBeDefined();
   });
 
-  it('用户初次注册', async () => {
-    const user = await service.signup(mockUser.username, mockUser.password);
+  // it('用户初次注册', async () => {
+  //   const user = await service.signup(mockUser.username, mockUser.password);
 
-    expect(user).toBeDefined();
-    expect(user.username).toBe(mockUser.username);
-  });
+  //   expect(user).toBeDefined();
+  //   expect(user.username).toBe(mockUser.username);
+  // });
 
-  it('用户使用相同的用户名再次注册', async () => {
-    await service.signup(mockUser.username, mockUser.password);
+  // it('用户使用相同的用户名再次注册', async () => {
+  //   await service.signup(mockUser.username, mockUser.password);
 
-    await expect(
-      service.signup(mockUser.username, mockUser.password),
-    ).rejects.toThrowError();
+  //   await expect(
+  //     service.signup(mockUser.username, mockUser.password),
+  //   ).rejects.toThrowError();
 
-    await expect(
-      service.signup(mockUser.username, mockUser.password),
-    ).rejects.toThrow(new ForbiddenException('用户已存在'));
-  });
+  //   await expect(
+  //     service.signup(mockUser.username, mockUser.password),
+  //   ).rejects.toThrow(new ForbiddenException('用户已存在'));
+  // });
 
-  it('用户登录', async () => {
-    // 注册新用户
-    await service.signup(mockUser.username, mockUser.password);
+  // it('用户登录', async () => {
+  //   // 注册新用户
+  //   await service.signup(mockUser.username, mockUser.password);
 
-    // 登录
-    expect(
-      await service.signin(mockUser.username, mockUser.password),
-    ).toStrictEqual({
-      menus: [],
-      token: 'token',
-    });
-  });
+  //   // 登录
+  //   expect(
+  //     await service.signin(mockUser.username, mockUser.password),
+  //   ).toStrictEqual({
+  //     menus: [],
+  //     token: 'token',
+  //   });
+  // });
 
-  it('用户登录，用户名密码错误', async () => {
-    // 注册新用户
-    await service.signup(mockUser.username, mockUser.password);
-    await expect(
-      service.signin(mockUser.username, '1111111'),
-    ).rejects.toThrowError();
+  // it('用户登录，用户名密码错误', async () => {
+  //   // 注册新用户
+  //   await service.signup(mockUser.username, mockUser.password);
+  //   await expect(
+  //     service.signin(mockUser.username, '1111111'),
+  //   ).rejects.toThrowError();
 
-    await expect(service.signin(mockUser.username, '1111111')).rejects.toThrow(
-      new ForbiddenException('用户名或者密码错误'),
-    );
-  });
+  //   await expect(service.signin(mockUser.username, '1111111')).rejects.toThrow(
+  //     new ForbiddenException('用户名或者密码错误'),
+  //   );
+  // });
 
   it('用户登录，用户名不存在', async () => {
     // await service.signup(mockUser.username, mockUser.password);

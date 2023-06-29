@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ExceptionFilter,
   HttpAdapterHost,
   HttpException,
@@ -8,6 +9,7 @@ import {
 import { ArgumentsHost, Catch } from '@nestjs/common';
 
 import * as requestIp from 'request-ip';
+import { QueryFailedError } from 'typeorm';
 
 @Catch()
 export class AllExceptionFilter implements ExceptionFilter {
@@ -30,15 +32,21 @@ export class AllExceptionFilter implements ExceptionFilter {
       httpStatus = exception.getStatus();
     }
 
-    const msg: unknown =
+    let msg: unknown =
       exception['message'] || exception['response'] || 'Internal Server Error';
     // 加入更多异常错误逻辑
-    // if (exception instanceof QueryFailedError) {
-    //   msg = exception.message;
-    //   // if (exception.driverError.errno && exception.driverError.errno === 1062) {
-    //   //   msg = '唯一索引冲突';
-    //   // }
-    // }
+    if (exception instanceof QueryFailedError) {
+      msg = exception.message;
+      // if (exception.driverError.errno && exception.driverError.errno === 1062) {
+      //   msg = '唯一索引冲突';
+      // }
+    } else if (exception instanceof BadRequestException) {
+      // 处理注解的必填项校验
+      const newMsg = (exception as any)?.response?.message;
+      if (newMsg) {
+        msg = newMsg;
+      }
+    }
 
     const responseBody = {
       headers: request.headers,

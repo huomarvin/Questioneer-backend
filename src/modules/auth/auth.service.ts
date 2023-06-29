@@ -30,7 +30,7 @@ export class AuthService {
     };
   }
 
-  async signup(username: string, password: string) {
+  async signup(username: string, nickname: string, password: string) {
     const user = await this.userService.find(username);
 
     if (user) {
@@ -39,6 +39,7 @@ export class AuthService {
 
     const res = await this.userService.create({
       username,
+      nickname,
       password,
     });
     return res;

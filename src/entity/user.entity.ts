@@ -23,6 +23,9 @@ export class User {
   username: string;
 
   @Column()
+  nickname: string;
+
+  @Column()
   @Exclude()
   password: string;
 

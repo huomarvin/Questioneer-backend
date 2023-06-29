@@ -7,10 +7,13 @@ import {
   UseInterceptors,
   ClassSerializerInterceptor,
   Logger,
+  Get,
+  Req,
 } from '@nestjs/common';
 import { TypeormFilter } from '@/filters/typeorm.filter';
 import { AuthService } from './auth.service';
 import { SigninUserDto } from './dto/signin-user.dto';
+import { UserService } from '../user/user.service';
 
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -18,6 +21,7 @@ import { SigninUserDto } from './dto/signin-user.dto';
 export class AuthController {
   constructor(
     private authService: AuthService,
+    private userService: UserService,
     @InjectRedis() private readonly redis: Redis,
   ) {}
 
@@ -34,7 +38,7 @@ export class AuthController {
 
   @Post('/signup')
   signup(@Body() dto: SigninUserDto) {
-    const { username, password } = dto;
-    return this.authService.signup(username, password);
+    const { username, password, nickname } = dto;
+    return this.authService.signup(username, nickname, password);
   }
 }

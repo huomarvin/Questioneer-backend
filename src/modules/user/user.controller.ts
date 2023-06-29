@@ -120,4 +120,9 @@ export class UserController {
       throw new UnauthorizedException();
     }
   }
+
+  @Get('/info')
+  info(@Req() req) {
+    return this.userService.findOne(req.user?.userId);
+  }
 }
