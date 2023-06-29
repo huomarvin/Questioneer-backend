@@ -13,6 +13,8 @@ import { AuthModule } from '@/modules/auth/auth.module';
 import { HealthModule } from '@/modules/health/health.module';
 import { LogsModule } from '@/modules/logs/logs.module';
 import { ConfigEnum } from './enum/config.enum';
+import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
+import { SurveyModule } from './modules/survey/survey.module';
 
 const envFilePath = `.env.${process.env.NODE_ENV || `development`}`;
 
@@ -79,12 +81,32 @@ const schema = Joi.object({
       inject: [ConfigService, Logger],
     }),
     TypeOrmModule.forRoot(connectionParams),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
+        const host = configService.get(ConfigEnum.MONGO_DB_HOST);
+        const port = configService.get(ConfigEnum.MONGO_DB_PORT) || 27017;
+        const username = configService.get(ConfigEnum.MONGO_DB_USERNAME);
+        const password = configService.get(ConfigEnum.MONGO_DB_PASSWORD);
+        const database = configService.get(ConfigEnum.MONGO_DB_DATABASE);
+        const uri = username
+          ? `mongodb://${username}:${password}@${host}:${port}/${database}`
+          : `mongodb://${host}:${port}/${database}`;
+        return {
+          uri,
+          retryAttempts: Infinity,
+          retryDelay: 5000,
+        } as MongooseModuleOptions;
+      },
+    }),
     UserModule,
     RolesModule,
     AuthModule,
     MenusModule,
     HealthModule,
     LogsModule,
+    SurveyModule,
   ],
   controllers: [],
   providers: [Logger],
