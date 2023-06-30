@@ -12,11 +12,27 @@ export class Survey {
   title: string;
 
   @Prop()
-  questions: {
-    questionText: string;
-    questionType: string;
-    choices: string[];
+  componentList: {
+    fe_id: string;
+    type: string;
+    title: string;
+    props: { [key: string]: any };
   }[];
+
+  @Prop()
+  isPublished: boolean;
+
+  @Prop()
+  isDeleted: boolean;
+
+  @Prop()
+  desc: string;
+
+  @Prop()
+  js: string;
+
+  @Prop()
+  css: string;
 
   @Prop({ required: true, default: Date.now })
   createdAt: Date;
