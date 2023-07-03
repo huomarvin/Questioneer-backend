@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsArray } from 'class-validator';
+import { IsString, IsOptional, IsArray, IsBoolean } from 'class-validator';
 
 export class SurveyDto {
   @IsString()
@@ -18,4 +18,8 @@ export class SurveyDto {
   @IsString()
   @IsOptional()
   desc: string;
+
+  @IsBoolean()
+  @IsOptional()
+  isPublished: boolean;
 }
