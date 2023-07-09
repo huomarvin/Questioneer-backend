@@ -15,6 +15,7 @@ import { LogsModule } from '@/modules/logs/logs.module';
 import { ConfigEnum } from './enum/config.enum';
 import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
 import { SurveyModule } from './modules/survey/survey.module';
+import { AnswerModule } from './modules/answer/answer.module';
 
 const envFilePath = `.env.${process.env.NODE_ENV || `development`}`;
 
@@ -107,6 +108,7 @@ const schema = Joi.object({
     HealthModule,
     LogsModule,
     SurveyModule,
+    AnswerModule,
   ],
   controllers: [],
   providers: [Logger],

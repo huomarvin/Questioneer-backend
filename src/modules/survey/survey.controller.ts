@@ -16,17 +16,18 @@ import { JwtGuard } from '@/guards/jwt.guard';
 import { SurveyDto } from './dto/survey.dto';
 
 @Controller('survey')
-@UseGuards(JwtGuard)
 export class SurveyController {
   constructor(private readonly surveyService: SurveyService) {}
 
   @Post()
+  @UseGuards(JwtGuard)
   async createSurvey(@Body() survey: Survey, @Req() req) {
     survey.ownerId = req.user.userId;
     return await this.surveyService.createSurvey(survey);
   }
 
   @Get()
+  @UseGuards(JwtGuard)
   async getAllSurveys(
     @Req() req,
     @Query('page') page: number,
@@ -45,12 +46,14 @@ export class SurveyController {
   }
 
   @Put(':id')
+  @UseGuards(JwtGuard)
   async updateSurvey(@Param('id') id: string, @Body() dto: SurveyDto) {
     const survey = { ...dto } as Survey;
     return await this.surveyService.updateSurvey(id, survey);
   }
 
   @Delete(':id')
+  @UseGuards(JwtGuard)
   async deleteSurvey(@Param('id') id: string) {
     return await this.surveyService.deleteSurvey(id);
   }

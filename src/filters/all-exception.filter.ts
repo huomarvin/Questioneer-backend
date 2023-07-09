@@ -7,6 +7,7 @@ import {
   LoggerService,
 } from '@nestjs/common';
 import { ArgumentsHost, Catch } from '@nestjs/common';
+import { MongooseError } from 'mongoose';
 
 import * as requestIp from 'request-ip';
 import { QueryFailedError } from 'typeorm';
@@ -46,8 +47,12 @@ export class AllExceptionFilter implements ExceptionFilter {
       if (newMsg) {
         msg = newMsg;
       }
+    } else if (
+      exception instanceof MongooseError &&
+      exception.message.startsWith('Cast to ObjectId failed for')
+    ) {
+      msg = '参数格式错误';
     }
-
     const responseBody = {
       headers: request.headers,
       query: request.query,
